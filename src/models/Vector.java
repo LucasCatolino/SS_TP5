@@ -1,5 +1,7 @@
 package models;
 
+import sun.applet.Main;
+
 import java.util.Objects;
 public class Vector {
     private double x;
@@ -55,12 +57,17 @@ public class Vector {
         return Math.sqrt(Math.pow((x),2) + Math.pow((y),2));
     }
 
+    public void opposite(){
+        this.x = -x;
+        this.y = -y;
+    }
+
     public void add(Vector v){
         this.x += v.x;
         this.y += v.y;
     }
 
-    public void multi(double e){
+    public void multiply(double e){
         x *= e;
         y *= e;
     }
@@ -69,13 +76,23 @@ public class Vector {
         return new Vector(x - v.x, y - v.y);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(x, y);
+    static public Vector add(Vector v1, Vector v2){
+        Vector toReturn = new Vector(v1.getX(), v1.getY());
+        toReturn.add(v2);
+        return toReturn;
     }
 
-    @Override
-    public String toString() {
-        return x+"\t"+y;
+    static public Vector sub(Vector v1, Vector v2){
+        Vector toReturn = new Vector(v1.getX(), v1.getY());
+        toReturn.sub(v2);
+        return toReturn;
     }
+
+    static public Vector multiply(Vector v1, double e){
+        Vector toReturn = new Vector(v1.getX(), v1.getY());
+        toReturn.multiply(e);
+        return toReturn;
+    }
+
+
 }

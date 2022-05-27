@@ -1,4 +1,7 @@
-package models;
+package core;
+
+import models.Particle;
+import models.Vector;
 
 import java.util.List;
 
