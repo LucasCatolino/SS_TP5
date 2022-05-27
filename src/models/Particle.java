@@ -12,16 +12,15 @@ import java.util.List;
 public class Particle{
 
     static private final double CONVERTER_TIME = 7;
-    private double zombieContactTime = 0; //si se pasa de 7seg se convierte
 
-    private double radio;
-    private double maxV;
+    private double zombieContactTime = 0; //si se pasa de 7seg se convierte
 
     private double visual;  //campo visual
 
+    private double radio;
+    private double maxV;
     private Vector position;
     private Vector velocity;
-
     private boolean isZombie;
     private Heuristic heuristic;
 
@@ -54,6 +53,10 @@ public class Particle{
 
     public void setPosition(Vector position) {
         this.position = position;
+    }
+
+    public double getDistanceTo(Particle p){
+        return position.getDistanceTo(p.getPosition());
     }
 
     public Vector getVelocity() {
@@ -93,10 +96,10 @@ public class Particle{
         if (!isZombie) {
             isZombie = true;
             heuristic= new ZombieHeuristic();
+            //todo: cambiar campo visual y demas
         }
     }
 
-    //-------
 
     public List<Particle> detectContact(List<Particle> particles){
         List<Particle> toReturn = new ArrayList<>();
@@ -110,43 +113,37 @@ public class Particle{
 
 
     //------------------------------------------
-
-    //si no esta en contacto con ninguna particula contactP = null
-
-    public void next(List<Particle> humans,  List<Particle> zombie, double dt){
-
+    //devulve true si era humano y se tranformo a zombie
+    public boolean next(List<Particle> humans,  List<Particle> zombie, double dt){
+        boolean toReturn = false;
         List<Particle> contactZ =  detectContact(zombie);
         List<Particle> contactH = detectContact(humans);
 
-        if(isConverted(contactZ)){
+        //maneja las conversion a zombie
+        if(isConverted(contactZ, dt)){
             convertToZombie();
+            toReturn = true;
         }
 
-        Vector target = heuristic.getTarget(humans, zombie);
+        //aplica la heuristica
+        Vector target = heuristic.getTarget(this ,humans, zombie);
 
+        //segun si esta en conacto con otras particuls es el CPM que aplica
         if(contactH.isEmpty() && contactZ.isEmpty()){
             CPM.noContact(this, target, dt);
         }else{
-            //dejo todas la particulas en contacto en una misma lista
-
+            //dejo todas las particulas con las que esta en contacto en unsa sola lista
             contactH.addAll(contactZ);
             CPM.Contact(this, target,contactH.get(1), dt);
         }
-
+        return toReturn;
     }
 
 
-    private boolean isConverted(List<Particle> contactZ){
-        if(isZombie){
-            return false;
-        }
-        if(zombieContactTime >= CONVERTER_TIME ){
-            return true;
-        }
-        if(contactZ.isEmpty()){
-            zombieContactTime = 0;
-
-        }
+    private boolean isConverted(List<Particle> contactZ, double dt){
+        if(isZombie){return false;}
+        if(zombieContactTime >= CONVERTER_TIME ){return true;}
+        if(zombieContactTime > 0){zombieContactTime += dt;}
         return false;
     }
 

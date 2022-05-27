@@ -9,7 +9,7 @@ import java.util.List;
 public class PersonHeuristic extends Heuristic {
 
 	@Override
-	public Vector getTarget(List<Particle> people, List<Particle> zombies) {
+	public Vector getTarget(Particle p, List<Particle> people, List<Particle> zombies) {
 		// TODO Auto-generated method stub
 		return null;
 	}
