@@ -1,10 +1,7 @@
 package core;
 
-import core.Heuristic;
 import models.Particle;
 import models.Vector;
-
-import javax.swing.*;
 import java.util.List;
 
 public class ZombieHeuristic extends Heuristic {
@@ -14,7 +11,6 @@ public class ZombieHeuristic extends Heuristic {
 		if(people.isEmpty()){
 			return randomWalk();
 		}
-		
 		return closestParticle(p, people);
 	}
 

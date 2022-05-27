@@ -12,10 +12,11 @@ import java.util.List;
 public class Particle{
 
     static private final double CONVERTER_TIME = 7;
+    static private  final double Z_INACTIVE_VELOCITY = 0.3; // m/s
+    static private  final double Z_MAX_VELOCITY = 4; // m/s
+    static private  final double H_MAX_VELOCITY = 5; //todo:no se cual se
 
     private double zombieContactTime = 0; //si se pasa de 7seg se convierte
-
-    private double visual;  //campo visual
 
     private double radio;
     private double maxV;
@@ -28,8 +29,11 @@ public class Particle{
         position = new Vector(particle.position.getX(), particle.position.getY());
         velocity = new Vector(particle.velocity.getX(), particle.velocity.getY());
         if (isZombie) {
+            maxV = Z_MAX_VELOCITY;
 			heuristic= new ZombieHeuristic();
 		} else {
+
+            maxV = H_MAX_VELOCITY;
 			heuristic= new PersonHeuristic();
 		}
     }
@@ -38,9 +42,12 @@ public class Particle{
         this.position = position;
         this.velocity = velocity;
         this.radio = radio;
+
         if (isZombie) {
+            maxV = Z_MAX_VELOCITY;
             heuristic= new ZombieHeuristic();
         } else {
+            maxV = H_MAX_VELOCITY;
             heuristic= new PersonHeuristic();
         }
     }
@@ -96,7 +103,7 @@ public class Particle{
         if (!isZombie) {
             isZombie = true;
             heuristic= new ZombieHeuristic();
-            //todo: cambiar campo visual y demas
+            maxV = Z_MAX_VELOCITY;
         }
     }
 
@@ -128,14 +135,19 @@ public class Particle{
         //aplica la heuristica
         Vector target = heuristic.getTarget(this ,humans, zombie);
 
-        //segun si esta en conacto con otras particuls es el CPM que aplica
-        if(contactH.isEmpty() && contactZ.isEmpty()){
-            CPM.noContact(this, target, dt);
-        }else{
-            //dejo todas las particulas con las que esta en contacto en unsa sola lista
-            contactH.addAll(contactZ);
-            CPM.Contact(this, target,contactH.get(1), dt);
+        //si es zombie y no tiene humanos cerca cambia la velocidad
+        if(isZombie){
+            if(humans.isEmpty()){
+                maxV = Z_INACTIVE_VELOCITY;
+            }else{
+                maxV = Z_MAX_VELOCITY;
+            }
         }
+
+        //dejo todas las particulas con las que esta en contacto en unsa sola lista
+        contactH.addAll(contactZ);
+        CPM.apply(this, target, dt, contactH.get(1)); //todo:tiene que aceptar una lista
+
         return toReturn;
     }
 
