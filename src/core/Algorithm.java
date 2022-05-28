@@ -108,10 +108,7 @@ public class Algorithm {
     }
 
     private boolean endCondition(double currentTime){
-        if(personNumber == 0 || currentTime >= MAX_SIMULATION_TIME){
-            return true;
-        }
-        return false;
+        return personNumber == 0 || currentTime >= MAX_SIMULATION_TIME;
     }
 
     private void fileReader(String staticFile, String dynamicFile){
