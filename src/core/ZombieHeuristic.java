@@ -2,31 +2,29 @@ package core;
 
 import models.Particle;
 import models.Vector;
-import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class ZombieHeuristic extends Heuristic {
 
 	@Override
-	public Vector getTarget(Particle p, List<Particle> people, List<Particle> zombies) {
-		if(people.isEmpty()){
+	public Vector getTarget(Particle p, Set<Particle> nearerZombies, Set<Particle> contactZombies,
+							Set<Particle> nearerHumans, Set<Particle> contactHumans) {
+
+		if(nearerHumans.isEmpty() && contactHumans.isEmpty()){
 			return randomWalk();
 		}
-		return closestParticle(p, people);
+
+		return closestParticle(p, (TreeSet<Particle>) nearerHumans, (TreeSet<Particle>) contactHumans);
 	}
 
-	private Vector closestParticle(Particle p, List<Particle> particles){
-		double minDistance = Double.MAX_VALUE;
-		Vector toReturn = null;
-		for (Particle currentP : particles) {
-			double aux = p.getDistanceTo(currentP);
-			if(aux < minDistance){
-				minDistance = aux;
-				toReturn = currentP.getPosition();
-			}
+	//----------
+	private Vector closestParticle(Particle p, TreeSet<Particle> nearerHumans, TreeSet<Particle> contactHumans){
+		if(!contactHumans.isEmpty()){
+			return contactHumans.first().getPosition();
 		}
-		return toReturn;
+		return nearerHumans.first().getPosition();
 	}
-
 
 	//todo: necesitaria las dienciones del espacio
 	private Vector randomWalk(){

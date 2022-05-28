@@ -5,11 +5,13 @@ import models.Particle;
 import models.Vector;
 
 import java.util.List;
+import java.util.Set;
 
 public class PersonHeuristic extends Heuristic {
 
 	@Override
-	public Vector getTarget(Particle p, List<Particle> people, List<Particle> zombies) {
+	public Vector getTarget(Particle p, Set<Particle> nearerZombies, Set<Particle> contactZombies,
+							Set<Particle> nearerHumans, Set<Particle> contactHumans) {
 		// TODO Auto-generated method stub
 		return null;
 	}

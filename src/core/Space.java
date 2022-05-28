@@ -3,6 +3,7 @@ package core;
 import java.util.List;
 import models.Particle;
 
+//todo: no se usa
 public class Space {
 	
 	private final int radius;
@@ -14,6 +15,10 @@ public class Space {
 		this.people= people;
 		this.zombies= zombies;		
 	}
+
+
+
+
 	
 	
 	

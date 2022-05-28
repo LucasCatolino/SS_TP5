@@ -3,6 +3,9 @@ package core;
 import models.Particle;
 import models.Vector;
 
+import java.util.Set;
+import java.util.TreeSet;
+
 public class CPM {
     private static final double MAX_RADIO = 4;
     private static final double MIN_RADIO = 0;
@@ -10,7 +13,7 @@ public class CPM {
     //private static final double BETA = 1;
 
     //todo: contactP deberia ser una lisata
-    static public void apply(Particle p, Vector target, double dt, Particle contactP){
+    static public void apply(Particle p, Vector target, double dt, TreeSet<Particle> contactP){
 
         if(contactP == null){
             //update speed
@@ -31,7 +34,7 @@ public class CPM {
         }
 
         //get escape verse
-        Vector escapeVerse = getEscapeVerse(p, contactP);
+        Vector escapeVerse = getEscapeVerse(p, contactP.first()); //todo:cambiar para que acepte mas de uno
 
         //update speed
         double newSpeed = p.getMaxV();
@@ -44,8 +47,6 @@ public class CPM {
 
         ///update radio
         p.setRadio(MIN_RADIO);
-
-
 
     }
 
