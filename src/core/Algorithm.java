@@ -1,7 +1,12 @@
 package core;
 
 import models.Particle;
+import models.Vector;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.*;
 
 public class Algorithm {
@@ -13,11 +18,13 @@ public class Algorithm {
 
     //variables del sistema
     private List<Particle> particles;
+   // private List<Particle> zombies;
 
     //variable auxiliares
     private double spaceRadio;
     private int personNumber;
     private int zombieNumber;
+    private double particleRadio;
     private int totalNumber;
 
     public Algorithm(String staticFile, String dynamicFile) {
@@ -111,13 +118,62 @@ public class Algorithm {
     }
 
     private void fileReader(String staticFile, String dynamicFile){
-        //todo:hacer
-        spaceRadio = 11;
-        personNumber = 10;
-        zombieNumber = 1;
-        totalNumber =11;
+    	//open static file
+        InputStream staticStream = Algorithm.class.getClassLoader().getResourceAsStream(staticFile);
+        assert staticStream != null;
+        Scanner staticScanner = new Scanner(staticStream);
+        
+        this.personNumber= Integer.parseInt(staticScanner.next()); //First line N
+        this.zombieNumber= 1;
+        this.spaceRadio= Double.parseDouble(staticScanner.next()); //Second line R
+        this.particleRadio= Double.parseDouble(staticScanner.next()); //Second line particle R
+        staticScanner.close();
+        
+        this.totalNumber= personNumber + zombieNumber;
+        
+	 	//open dynamic file
+        InputStream dynamicStream = Algorithm.class.getClassLoader().getResourceAsStream(dynamicFile);
+        assert dynamicStream != null;
+        Scanner dynamicScanner = new Scanner(dynamicStream);
+        
+        dynamicScanner.next(); //First line time
+        
+        //Second line has X Y for zombie particle
+        double xZombie= Double.parseDouble(dynamicScanner.next());
+        double yZombie= Double.parseDouble(dynamicScanner.next());
+        
         particles = new ArrayList<>();
+        Particle zombie= new Particle(new Vector(xZombie, yZombie), new Vector(0, 0), particleRadio, true, spaceRadio);
+        particles.add(zombie);
+        
+        while (dynamicScanner.hasNext()) {
+        	//Each line has X Y for person particle
+			double xPerson= Double.parseDouble(dynamicScanner.next());
+			double yPerson= Double.parseDouble(dynamicScanner.next());
+			
+			Particle person= new Particle(new Vector(xPerson, yPerson), new Vector(0, 0), particleRadio, false, spaceRadio);
+			particles.add(person);
+		}
+        
+        dynamicScanner.close();
     }
 
+    static public void main(String[] args) throws IOException {
+		System.out.println("Static");
+		BufferedReader readerStatic = new BufferedReader(new InputStreamReader(System.in));
+		String staticInput = readerStatic.readLine();
+		
+		System.out.println("Dynamic");
+		BufferedReader readerDynamic= new BufferedReader(new InputStreamReader(System.in));
+		String dynamicInput = readerDynamic.readLine();
+				
+		String staticFile= (staticInput.length() == 0) ? "static.txt" : staticInput;
+		String dynamicFile= (dynamicInput.length() == 0) ? "dynamic.txt" : dynamicInput;
+		
+		System.out.println("Starting with " + staticFile + ", " + dynamicFile);
+		
+		Algorithm algorithm= new Algorithm(staticFile, dynamicFile);
+		algorithm.run();
+	}
 
 }

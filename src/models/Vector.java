@@ -1,5 +1,7 @@
 package models;
 
+import java.util.Objects;
+
 public class Vector {
     private double x;
     private double y;
