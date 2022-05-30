@@ -8,6 +8,7 @@ import java.util.TreeSet;
 public class ZombieHeuristic extends Heuristic {
 
 	private static final double MAX_RANDOM_COUNTER = 4;// cantidad de dt hasta cambiar a un nuevo randomWalkTarget
+	private static final int DEGREES= 360;
 	private Vector randomWalkTarget;
 	private double randomWalkCounter = -1;
 
@@ -48,15 +49,13 @@ public class ZombieHeuristic extends Heuristic {
 	}
 
 	private Vector getRandomWalkTarget(){
-		Vector ToReturn;
-		do {
-			double x = 0 + (Math.random() * (getSpaceRadio()-0+1));
-			double y = 0 + (Math.random() * (getSpaceRadio()-0+1));
-			ToReturn = new Vector(x, y);
-		}
-		while(checkVector(ToReturn) == 1);
+		double distance= Math.random() * getSpaceRadio();
+		double degrees= Math.random() * DEGREES;
 
-		return ToReturn;
+		double x = distance * Math.cos(Math.toRadians(degrees)) + getSpaceRadio();
+		double y = distance * Math.sin(Math.toRadians(degrees)) + getSpaceRadio();
+
+		return  new Vector(x, y);
 	}
 
 
