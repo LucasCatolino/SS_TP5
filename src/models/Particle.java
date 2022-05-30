@@ -159,11 +159,10 @@ public class Particle{
 
     private boolean isConverted(Set<Particle> contactZombies, double dt){
         if(isZombie){return false;}
-        if(zombieContactTime >= CONVERTER_TIME ){return true;}
         if(!contactZombies.isEmpty() || zombieContactTime != 0){
             zombieContactTime += dt;
         }
-        return false;
+        return zombieContactTime >= CONVERTER_TIME;
     }
 
     //-------
