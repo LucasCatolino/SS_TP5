@@ -7,6 +7,10 @@ import java.util.TreeSet;
 
 public class ZombieHeuristic extends Heuristic {
 
+	public ZombieHeuristic(double spaceRadio) {
+		super(spaceRadio);
+	}
+
 	@Override
 	public Vector getTarget(Particle p, Set<Particle> nearerZombies, Set<Particle> contactZombies,
 							Set<Particle> nearerHumans, Set<Particle> contactHumans) {
@@ -25,6 +29,7 @@ public class ZombieHeuristic extends Heuristic {
 		}
 		return nearerHumans.first().getPosition();
 	}
+
 
 	//todo: necesitaria las dienciones del espacio
 	private Vector randomWalk(){

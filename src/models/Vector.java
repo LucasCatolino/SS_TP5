@@ -1,8 +1,5 @@
 package models;
 
-import sun.applet.Main;
-
-import java.util.Objects;
 public class Vector {
     private double x;
     private double y;

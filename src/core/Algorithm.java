@@ -13,10 +13,9 @@ public class Algorithm {
 
     //variables del sistema
     private List<Particle> particles;
-   // private List<Particle> zombies;
-    private int spaceRadio;
 
     //variable auxiliares
+    private double spaceRadio;
     private int personNumber;
     private int zombieNumber;
     private int totalNumber;
@@ -35,7 +34,7 @@ public class Algorithm {
             personNumber = 0;
             zombieNumber = 0;
 
-            //recorro todas la particulas
+            //agarró una partícula y la analizó con todas las demás
             for ( Particle currentP : particles ) {
 
                 Set<Particle> nearerZombies = new TreeSet<>(createComparator(currentP));  // zombies dentro del campo de vision de currentP
@@ -63,10 +62,10 @@ public class Algorithm {
                 //lo guardo en el nuevo espacio
                 newPosition.add(newP);
 
-                //todo:crear funcion que pasa este vector al archivo de salida
+            //termina el for
             }
-
-            //todo: ver si esto funciona bien
+            currentTime += dt;
+            //todo:crear funcion que pasa este vector al archivo de salida
             particles = newPosition;
         }
     }
@@ -113,13 +112,11 @@ public class Algorithm {
 
     private void fileReader(String staticFile, String dynamicFile){
         //todo:hacer
-        //mientras tanto:
         spaceRadio = 11;
         personNumber = 10;
         zombieNumber = 1;
         totalNumber =11;
         particles = new ArrayList<>();
-        //zombies = new ArrayList<>();
     }
 
 
