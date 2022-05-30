@@ -22,6 +22,7 @@ public class ZombieHeuristic extends Heuristic {
 
 		if(nearerHumans.isEmpty() && contactHumans.isEmpty()){
 			return randomWalk();
+
 		}
 		//reinicio el contador de random walk
 		randomWalkCounter = -1;
@@ -38,7 +39,7 @@ public class ZombieHeuristic extends Heuristic {
 	}
 
 
-	private Vector randomWalk(){
+	private Vector randomWalk( ){
 		if(randomWalkCounter == -1 || randomWalkCounter > MAX_RANDOM_COUNTER ){
 			randomWalkCounter = 0;
 			randomWalkTarget = getRandomWalkTarget();
@@ -55,7 +56,10 @@ public class ZombieHeuristic extends Heuristic {
 		double x = distance * Math.cos(Math.toRadians(degrees)) + getSpaceRadio();
 		double y = distance * Math.sin(Math.toRadians(degrees)) + getSpaceRadio();
 
+
+
 		return  new Vector(x, y);
+
 	}
 
 

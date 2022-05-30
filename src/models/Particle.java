@@ -98,6 +98,10 @@ public class Particle{
         this.radio = radio;
     }
 
+    public double getSpaceRadio() {
+        return spaceRadio;
+    }
+
     public double getMaxV() {
         return maxV;
     }
@@ -144,6 +148,7 @@ public class Particle{
         }
 
         //dejo todas las particulas con las que esta en contacto en una sola lista
+        //todo: target == null salteo CMP
         contactZombies.addAll(contactHumans);
         CPM.apply(newParticle, target, dt, (TreeSet<Particle>) contactZombies);
 
