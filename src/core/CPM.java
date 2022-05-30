@@ -12,7 +12,6 @@ public class CPM {
     private static final double TOU = 0.5; //seg
     //private static final double BETA = 1;
 
-    //todo: contactP deberia ser una lisata
     static public void apply(Particle p, Vector target, double dt, TreeSet<Particle> contactP){
 
 
@@ -35,7 +34,7 @@ public class CPM {
 
         if(!contactP.isEmpty()){
             //get escape verse
-            Vector escapeVerse = getEscapeVerse(p, contactP.first()); //todo:cambiar para que acepte mas de uno
+            Vector escapeVerse = getEscapeVerse(p, contactP.first());
 
             //update speed
             double newSpeed = p.getMaxV();

@@ -18,13 +18,6 @@ public class Algorithm {
 
     //variables del sistema
     private List<Particle> particles;
-   // private List<Particle> zombies;
-
-    //variable auxiliares
-    private double spaceRadio;
-    private int personNumber;
-    private int zombieNumber;
-    private double particleRadio;
     private int totalNumber;
 
     public Algorithm(String staticFile, String dynamicFile) {
@@ -34,12 +27,15 @@ public class Algorithm {
     public void run(){
 
         double currentTime = 0;
-        while(!endCondition(currentTime)){
+        int zombieNumber = 1;
+        int personNumber = totalNumber - zombieNumber;
+
+        while(!endCondition(currentTime, personNumber)){
 
             List<Particle> newPosition = new ArrayList<>();
 
-            personNumber = 0;
             zombieNumber = 0;
+            personNumber = 0;
 
             //agarró una partícula y la analizó con todas las demás
             for ( Particle currentP : particles ) {
@@ -69,8 +65,12 @@ public class Algorithm {
                 //lo guardo en el nuevo espacio
                 newPosition.add(newP);
 
-            //termina el for
+            }//termina el for
+
+            if(totalNumber != zombieNumber + personNumber){
+                //todo:falla
             }
+
             currentTime += dt;
             //todo:crear funcion que pasa este vector al archivo de salida
             particles = newPosition;
@@ -103,17 +103,14 @@ public class Algorithm {
     //ordena de las que estan mas cerca de p a mas lejos
     private static Comparator<Particle> createComparator(Particle p) {
         final Particle finalP = new Particle(p);
-        return new Comparator<Particle>() {
-            @Override
-            public int compare(Particle p0, Particle p1) {
-                double ds0 = p0.getDistanceTo(finalP);
-                double ds1 = p1.getDistanceTo(finalP);
-                return Double.compare(ds0, ds1);
-            }
+        return (p0, p1) -> {
+            double ds0 = p0.getDistanceTo(finalP);
+            double ds1 = p1.getDistanceTo(finalP);
+            return Double.compare(ds0, ds1);
         };
     }
 
-    private boolean endCondition(double currentTime){
+    private boolean endCondition(double currentTime, int personNumber){
         return personNumber == 0 || currentTime >= MAX_SIMULATION_TIME;
     }
 
@@ -123,12 +120,13 @@ public class Algorithm {
         assert staticStream != null;
         Scanner staticScanner = new Scanner(staticStream);
         
-        this.personNumber= Integer.parseInt(staticScanner.next()); //First line N
-        this.zombieNumber= 1;
-        this.spaceRadio= Double.parseDouble(staticScanner.next()); //Second line R
-        this.particleRadio= Double.parseDouble(staticScanner.next()); //Second line particle R
+        int personNumber= Integer.parseInt(staticScanner.next()); //First line N
+        int zombieNumber= 1;
+        //variable auxiliares
+        double spaceRadio = Double.parseDouble(staticScanner.next()); //Second line R
+        double particleRadio = Double.parseDouble(staticScanner.next()); //Second line particle R
         staticScanner.close();
-        
+
         this.totalNumber= personNumber + zombieNumber;
         
 	 	//open dynamic file

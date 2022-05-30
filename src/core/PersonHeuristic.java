@@ -16,7 +16,7 @@ public class PersonHeuristic extends Heuristic {
 	@Override
 	public Vector getTarget(Particle p, Set<Particle> nearerZombies, Set<Particle> contactZombies,
 							Set<Particle> nearerHumans, Set<Particle> contactHumans) {
-		// TODO Auto-generated method stub
+		//todo:
 		return null;
 	}
 

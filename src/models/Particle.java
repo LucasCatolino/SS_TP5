@@ -166,25 +166,6 @@ public class Particle{
         return false;
     }
 
-    /*//todo:borrar
-    private Particle detectContact(Set<Particle> particles, double dt){
-        Particle toReturn = null;
-        for (Particle currentP : particles) {
-            //particle esta ordena, si una esta mas lejos del radio las demas tmabien
-            if(this.getDistanceTo(currentP) > radio)
-                return toReturn;
-            //aca es que se estan tocando
-            //si es zombie
-            if(!this.isZombie && currentP.isZombie)
-                zombieContactTime += dt;
-            //solo me interesa el mas cercano al centro
-            if(toReturn == null)
-                toReturn = currentP;
-        }
-        return toReturn;
-
-    }*/
-
     //-------
 
     @Override
