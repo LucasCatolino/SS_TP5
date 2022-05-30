@@ -36,7 +36,7 @@ public class Writer {
     }
     
 	private void staticFile(double r, int n, FileWriter myWriter) throws IOException {
-		myWriter.write("" + (n+1) + "\n"); //N humans + 1 zombie
+		myWriter.write("" + n + "\n"); //N humans
 		myWriter.write("" + r + "\n"); //L
 		myWriter.write("" + R_P + "\n");
 	}
