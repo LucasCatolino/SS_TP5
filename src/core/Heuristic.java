@@ -3,7 +3,6 @@ package core;
 import models.Particle;
 import models.Vector;
 
-import java.util.List;
 import java.util.Set;
 
 public abstract class Heuristic {
@@ -20,7 +19,7 @@ public abstract class Heuristic {
 
 
 	//retorna 1 si esta dentro de la circunferencia, 0 si esta en el borde, -1 si esta afuera
-	private int circumference(Vector position){
+	protected int checkVector(Vector position){
 		double distance = Math.sqrt(Math.pow(position.getX() - spaceRadio, 2) + Math.pow(position.getY() - spaceRadio, 2));
 		if(distance > spaceRadio){
 			return -1;
@@ -29,5 +28,9 @@ public abstract class Heuristic {
 		}
 		return  1;
 
+	}
+
+	public double getSpaceRadio() {
+		return spaceRadio;
 	}
 }
