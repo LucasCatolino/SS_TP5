@@ -14,7 +14,7 @@ import java.util.*;
 public class Algorithm {
     //constant
     private static final double dt = 0.5; //seg
-    private static final double MAX_SIMULATION_TIME = 10; //seg
+    private static final double MAX_SIMULATION_TIME = 300; //seg
     private static final double Z_VISUAL_FIELD = 4; //m
     private static final double H_VISUAL_FIELD = 22; //m
 
@@ -76,12 +76,9 @@ public class Algorithm {
             if(totalNumber != zombieNumber + personNumber){
                 System.out.println("FALLO");
                 return;
-                //todo:falla
             }
 
             currentTime += dt;
-
-            //todo:crear funcion que pasa este vector al archivo de salida
             particles = newPosition;
             writeOutput(currentTime);
         }

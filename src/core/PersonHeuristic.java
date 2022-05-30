@@ -17,7 +17,7 @@ public class PersonHeuristic extends Heuristic {
 	public Vector getTarget(Particle p, Set<Particle> nearerZombies, Set<Particle> contactZombies,
 							Set<Particle> nearerHumans, Set<Particle> contactHumans) {
 
-		return p.getPosition();
+		return null;
 	}
 
 }

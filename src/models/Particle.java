@@ -136,24 +136,30 @@ public class Particle{
         //aplica la heurística
         Vector target = heuristic.getTarget(newParticle , nearerZombies, contactZombies, nearerHumans, contactHumans);
 
-        //si es zombie y no tiene humanos cerca cambia la velocidad
+        //manejo de velocidades maxima
         if(isZombie){
+            //si es zombie y no tiene humanos cerca cambia la velocidad
             if(nearerHumans.isEmpty() && contactHumans.isEmpty()){
                 maxV = Z_INACTIVE_VELOCITY;
             }else{
                 maxV = Z_MAX_VELOCITY;
             }
+        }else{
+            //si un zombie lo toca no se mueve
+            if(!contactZombies.isEmpty())
+                maxV = 0;
         }
 
-        //dejo todas las particulas con las que esta en contacto en una sola lista
-        //todo: target == null salteo CMP
-        contactZombies.addAll(contactHumans);
-        CPM.apply(newParticle, target, dt, (TreeSet<Particle>) contactZombies);
+        //si el target es null no muevo la particula
+        if(target != null){
+            //dejo todas las particulas con las que esta en contacto en una sola lista
+            contactZombies.addAll(contactHumans);
+            CPM.apply(newParticle, target, dt, (TreeSet<Particle>) contactZombies);
+        }
 
         //retorno la nueva particula con la nueva posiciones
         return newParticle;
     }
-
 
     private boolean isConverted(Set<Particle> contactZombies, double dt){
         if(isZombie){return false;}
