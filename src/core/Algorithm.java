@@ -11,7 +11,7 @@ import java.util.*;
 
 public class Algorithm {
     //constant
-    private static final double dt = 0.001; //seg
+    private static final double dt = 0.5; //seg
     private static final double MAX_SIMULATION_TIME = 20; //seg
     private static final double Z_VISUAL_FIELD = 4; //m
     private static final double H_VISUAL_FIELD = 22; //m
@@ -57,10 +57,11 @@ public class Algorithm {
 
 
                 //metricas de la corrida actual
-                if(newP.isZombie())
+                if(newP.isZombie()) {
                     zombieNumber++;
-                else
+                }else {
                     personNumber++;
+                }
 
                 //lo guardo en el nuevo espacio
                 newPosition.add(newP);
@@ -76,7 +77,6 @@ public class Algorithm {
             currentTime += dt;
 
             //todo:crear funcion que pasa este vector al archivo de salida
-            System.out.println("Z: " + zombieNumber +" P: " + personNumber);
             particles = newPosition;
         }
     }

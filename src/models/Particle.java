@@ -32,14 +32,11 @@ public class Particle{
         velocity = new Vector(particle.velocity.getX(), particle.velocity.getY());
         this.id = particle.id;
         this.spaceRadio = particle.spaceRadio;
-        if (isZombie) {
-            maxV = Z_MAX_VELOCITY;
-			heuristic= new ZombieHeuristic(spaceRadio);
-		} else {
-
-            maxV = H_MAX_VELOCITY;
-			heuristic= new PersonHeuristic(spaceRadio);
-		}
+        heuristic = particle.heuristic;
+        this.radio = particle.radio;
+        this.isZombie = particle.isZombie;
+        this.maxV = particle.maxV;
+        this.zombieContactTime = particle.zombieContactTime;
     }
 
     public Particle(Vector position, Vector velocity, double radio, boolean isZombie, double spaceRadio) {
@@ -48,6 +45,7 @@ public class Particle{
         this.radio = radio;
         this.id = getNextId();
         this.spaceRadio = spaceRadio;
+        this.isZombie = isZombie;
         if (isZombie) {
             maxV = Z_MAX_VELOCITY;
             heuristic= new ZombieHeuristic(spaceRadio);
@@ -180,5 +178,8 @@ public class Particle{
         return Objects.hash(id);
     }
 
-
+    @Override
+    public String toString() {
+        return position.toString();
+    }
 }
