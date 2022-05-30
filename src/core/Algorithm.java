@@ -4,6 +4,8 @@ import models.Particle;
 import models.Vector;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -12,13 +14,14 @@ import java.util.*;
 public class Algorithm {
     //constant
     private static final double dt = 0.5; //seg
-    private static final double MAX_SIMULATION_TIME = 20; //seg
+    private static final double MAX_SIMULATION_TIME = 10; //seg
     private static final double Z_VISUAL_FIELD = 4; //m
     private static final double H_VISUAL_FIELD = 22; //m
 
     //variables del sistema
     private List<Particle> particles;
     private int totalNumber;
+    private double spaceRadio;
 
     public Algorithm(String staticFile, String dynamicFile) {
         fileReader(staticFile, dynamicFile);
@@ -27,6 +30,8 @@ public class Algorithm {
     public void run(){
 
         double currentTime = 0;
+        writeOutput(currentTime);
+        
         int zombieNumber = 1;
         int personNumber = totalNumber - zombieNumber;
 
@@ -78,9 +83,43 @@ public class Algorithm {
 
             //todo:crear funcion que pasa este vector al archivo de salida
             particles = newPosition;
+            writeOutput(currentTime);
         }
     }
 
+    private void writeOutput(double time) {
+    	int zombie= 0;
+    	int person= 0;
+		try {
+            File file = new File("resources/dynamic.xyz");
+            FileWriter myWriter = new FileWriter("resources/dynamic.xyz", true); //true to append to file
+            myWriter.write("" + (totalNumber + 5) + "\n");
+            myWriter.write("T=" + time + "\n");
+            for (Iterator iterator = particles.iterator(); iterator.hasNext();) {
+				Particle particle = (Particle) iterator.next();
+				try {
+					zombie= particle.isZombie() ? 1 : 0;
+					person= (zombie == 1) ? 0 : 1;
+            		myWriter.write("" + particle.getPosition().getX() + "\t" + particle.getPosition().getY()
+            				+ "\t" + particle.getRadio() + "\t" + zombie + "\t" + person
+            				+ "\t0\t0\n");
+            	} catch (Exception e) {
+            		System.err.println("IOException");
+            	}
+			}
+            myWriter.write("0\t0\t0.1\t0\t0\t0\t0\n");
+            myWriter.write("0\t" + (2*spaceRadio) + "\t0.1\t0\t0\t0\t0\n");
+            myWriter.write("" + (2*spaceRadio) + "\t0\t0.1\t0\t0\t0\t0\n");
+            myWriter.write("" + (2*spaceRadio) + "\t" + (2*spaceRadio) + "\t0.1\t0\t0\t0\t0\n");
+            myWriter.write("" + (spaceRadio+0.01) + "\t" +	(spaceRadio+0.01) + "\t" + spaceRadio + "\t1\t1\t0\t0.8\n");
+            
+            myWriter.close();
+        } catch (IOException e) {
+            System.out.println("IOException ocurred");
+            e.printStackTrace();
+        }
+	}
+    
     private void getNearerParticles(Particle currentP, double visualField, Set<Particle> nearerZombies,
                                     Set<Particle> contactZombies, Set<Particle> nearerHumans, Set<Particle> contactHumans){
         for ( Particle p: particles ) {
@@ -127,7 +166,7 @@ public class Algorithm {
         int personNumber= Integer.parseInt(staticScanner.next()); //First line N
         int zombieNumber= 1;
         //variable auxiliares
-        double spaceRadio = Double.parseDouble(staticScanner.next()); //Second line R
+        spaceRadio = Double.parseDouble(staticScanner.next()); //Second line R
         double particleRadio = Double.parseDouble(staticScanner.next()); //Second line particle R
         staticScanner.close();
 
@@ -176,6 +215,7 @@ public class Algorithm {
 		
 		Algorithm algorithm= new Algorithm(staticFile, dynamicFile);
 		algorithm.run();
+		System.out.println("End");
 	}
 
 }
