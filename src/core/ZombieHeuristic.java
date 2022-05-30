@@ -7,7 +7,7 @@ import java.util.TreeSet;
 
 public class ZombieHeuristic extends Heuristic {
 
-	private static final double MAX_RANDOM_COUNTER = 4;// cantidad de dt hasta cambiar a un nuevo randomWalkTarget
+	private static final double MAX_RANDOM_COUNTER = 1000;// cantidad de dt hasta cambiar a un nuevo randomWalkTarget
 	private static final int DEGREES= 360;
 	private Vector randomWalkTarget;
 	private double randomWalkCounter = -1;
@@ -21,7 +21,7 @@ public class ZombieHeuristic extends Heuristic {
 							Set<Particle> nearerHumans, Set<Particle> contactHumans) {
 
 		if(nearerHumans.isEmpty() && contactHumans.isEmpty()){
-			return randomWalk();
+			return randomWalk(p);
 
 		}
 		//reinicio el contador de random walk
@@ -33,13 +33,13 @@ public class ZombieHeuristic extends Heuristic {
 	//----------
 	private Vector closestParticle(Particle p, TreeSet<Particle> nearerHumans, TreeSet<Particle> contactHumans){
 		if(!contactHumans.isEmpty()){
-			return contactHumans.first().getPosition();
+			return contactHumans.first().getPosition(); // No deberìa ir a random Walk?
 		}
 		return nearerHumans.first().getPosition();
 	}
 
 
-	private Vector randomWalk( ){
+	private Vector randomWalk(Particle p ){
 		if(randomWalkCounter == -1 || randomWalkCounter > MAX_RANDOM_COUNTER ){
 			randomWalkCounter = 0;
 			randomWalkTarget = getRandomWalkTarget();

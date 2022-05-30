@@ -129,7 +129,7 @@ public class Particle{
         Particle newParticle = new Particle(this);
 
         //maneja la conversión a zombie
-        if(isConverted(contactZombies, dt)){
+        if(isConverted(newParticle, contactZombies, dt)){
             newParticle.convertToZombie();
         }
 
@@ -140,14 +140,14 @@ public class Particle{
         if(isZombie){
             //si es zombie y no tiene humanos cerca cambia la velocidad
             if(nearerHumans.isEmpty() && contactHumans.isEmpty()){
-                maxV = Z_INACTIVE_VELOCITY;
+                newParticle.maxV = Z_INACTIVE_VELOCITY;
             }else{
-                maxV = Z_MAX_VELOCITY;
+                newParticle.maxV = Z_MAX_VELOCITY;
             }
         }else{
             //si un zombie lo toca no se mueve
             if(!contactZombies.isEmpty())
-                maxV = 0;
+                newParticle.maxV = 0;
         }
 
         //si el target es null no muevo la particula
@@ -161,12 +161,12 @@ public class Particle{
         return newParticle;
     }
 
-    private boolean isConverted(Set<Particle> contactZombies, double dt){
+    private boolean isConverted(Particle p, Set<Particle> contactZombies, double dt){
         if(isZombie){return false;}
-        if(!contactZombies.isEmpty() || zombieContactTime != 0){
-            zombieContactTime += dt;
+        if(!contactZombies.isEmpty() || p.zombieContactTime != 0){
+            p.zombieContactTime += dt;
         }
-        return zombieContactTime >= CONVERTER_TIME;
+        return p.zombieContactTime >= CONVERTER_TIME;
     }
 
     //-------

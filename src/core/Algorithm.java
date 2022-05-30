@@ -13,10 +13,10 @@ import java.util.*;
 
 public class Algorithm {
     //constant
-    private static final double dt = 0.5; //seg
+    private static final double dt =0.01; //seg
     private static final double MAX_SIMULATION_TIME = 300; //seg
     private static final double Z_VISUAL_FIELD = 4; //m
-    private static final double H_VISUAL_FIELD = 22; //m
+    private static final double H_VISUAL_FIELD = 4; //m
 
     //variables del sistema
     private List<Particle> particles;
@@ -120,8 +120,8 @@ public class Algorithm {
     private void getNearerParticles(Particle currentP, double visualField, Set<Particle> nearerZombies,
                                     Set<Particle> contactZombies, Set<Particle> nearerHumans, Set<Particle> contactHumans){
         for ( Particle p: particles ) {
-            if(!currentP.equals(p) && currentP.getDistanceTo(p) <= visualField){
-                if(currentP.getDistanceTo(p) <= currentP.getRadio()) {
+            if((!currentP.equals(p)) && (currentP.getDistanceTo(p) <= visualField)){
+                if(currentP.getDistanceTo(p) <= currentP.getRadio() + p.getRadio()) {
                     //se estan tocando
                     if(p.isZombie()) {
                         contactZombies.add(p);

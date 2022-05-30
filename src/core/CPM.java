@@ -32,8 +32,9 @@ public class CPM {
             p.setRadio(MIN_RADIO);
         }
 
-        if(!contactP.isEmpty()){
+       else if(!contactP.isEmpty()){
             //get escape verse
+
             Vector escapeVerse = getEscapeVerse(p, contactP.first());
 
             //update speed
@@ -53,7 +54,7 @@ public class CPM {
             double newSpeed = p.getMaxV()*( (p.getRadio() - MIN_RADIO)/(MAX_RADIO - MIN_RADIO));
 
             //update Velocity
-            Vector eTarget = Vector.sub(p.getPosition(), target).getVersor();
+            Vector eTarget = Vector.sub(target, p.getPosition()).getVersor();
             p.setVelocity(Vector.multiply(eTarget, newSpeed));
 
             //update vector position
@@ -71,7 +72,7 @@ public class CPM {
 
     static private Vector getEscapeVerse(Particle p, Particle contactP){
         Vector toReturn = Vector.sub(p.getPosition(), contactP.getPosition());
-        toReturn.opposite();
+
         return toReturn.getVersor();
     }
 
@@ -90,8 +91,7 @@ public class CPM {
     static private Vector getCenterEscape(Particle p){
         Vector aux = new Vector(p.getSpaceRadio(), p.getSpaceRadio());
         Vector toReturn = Vector.sub(p.getPosition(), aux);
-        toReturn.opposite();
-        return toReturn.getVersor();
+        return toReturn.opposite().getVersor();
 
     }
 

@@ -44,6 +44,7 @@ public class Vector {
         return getDistanceTo(v.x, v.y);
     }
 
+
     public double getDistanceTo(double x, double y){
         return Math.sqrt(Math.pow((this.x - x),2) + Math.pow((this.y - y),2));
     }
@@ -56,19 +57,18 @@ public class Vector {
         return Math.sqrt(Math.pow((x),2) + Math.pow((y),2));
     }
 
-    public void opposite(){
-        this.x = -x;
-        this.y = -y;
+    public Vector opposite(){
+        return new Vector(-x,-y);
     }
 
-    public void add(Vector v){
+    public Vector add(Vector v){
         this.x += v.x;
         this.y += v.y;
+        return new Vector(x,y);
     }
 
-    public void multiply(double e){
-        x *= e;
-        y *= e;
+    public Vector multiply(double e){
+        return new Vector(x*e,y*e);
     }
 
     public Vector sub(Vector v){
@@ -77,20 +77,18 @@ public class Vector {
 
     static public Vector add(Vector v1, Vector v2){
         Vector toReturn = new Vector(v1.getX(), v1.getY());
-        toReturn.add(v2);
-        return toReturn;
+        return  toReturn.add(v2);
     }
 
     static public Vector sub(Vector v1, Vector v2){
         Vector toReturn = new Vector(v1.getX(), v1.getY());
-        toReturn.sub(v2);
-        return toReturn;
+
+        return toReturn.sub(v2);
     }
 
     static public Vector multiply(Vector v1, double e){
         Vector toReturn = new Vector(v1.getX(), v1.getY());
-        toReturn.multiply(e);
-        return toReturn;
+        return toReturn.multiply(e);
     }
 
     @Override
