@@ -7,7 +7,7 @@ import java.util.TreeSet;
 
 public class ZombieHeuristic extends Heuristic {
 
-	private static final double MAX_RANDOM_COUNTER = 1000;// cantidad de dt hasta cambiar a un nuevo randomWalkTarget
+	private static final double MAX_RANDOM_COUNTER = 2000;// cantidad de dt hasta cambiar a un nuevo randomWalkTarget
 	private static final int DEGREES= 360;
 	private Vector randomWalkTarget;
 	private double randomWalkCounter = -1;

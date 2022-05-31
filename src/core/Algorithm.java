@@ -16,7 +16,7 @@ public class Algorithm {
     private static final double dt =0.01; //seg
     private static final double MAX_SIMULATION_TIME = 300; //seg
     private static final double Z_VISUAL_FIELD = 4; //m
-    private static final double H_VISUAL_FIELD = 4; //m
+    private static final double H_VISUAL_FIELD = 6; //m
 
     //variables del sistema
     private List<Particle> particles;
@@ -30,7 +30,7 @@ public class Algorithm {
     public void run(){
 
         double currentTime = 0;
-        writeOutput(currentTime);
+        writeOutput(currentTime,false);
         
         int zombieNumber = 1;
         int personNumber = totalNumber - zombieNumber;
@@ -80,16 +80,16 @@ public class Algorithm {
 
             currentTime += dt;
             particles = newPosition;
-            writeOutput(currentTime);
+            writeOutput(currentTime,true);
         }
     }
 
-    private void writeOutput(double time) {
+    private void writeOutput(double time, boolean append) {
     	int zombie= 0;
     	int person= 0;
 		try {
             File file = new File("resources/dynamic.xyz");
-            FileWriter myWriter = new FileWriter("resources/dynamic.xyz", true); //true to append to file
+            FileWriter myWriter = new FileWriter("resources/dynamic.xyz", append); //true to append to file
             myWriter.write("" + (totalNumber + 5) + "\n");
             myWriter.write("T=" + time + "\n");
             for (Iterator iterator = particles.iterator(); iterator.hasNext();) {
