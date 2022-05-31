@@ -11,10 +11,10 @@ import java.util.Scanner;
 import core.Algorithm;
 
 public class AnimationFilesCreator {
-
+	
 	private static void createAnimationFile(String staticFile, String dynamicFile) {
 		String outName= dynamicFile.substring(0, dynamicFile.length() - 4);
-		String time= "";
+		Double time;
 		Double x;
 		Double y;
 		Double r;
@@ -38,10 +38,12 @@ public class AnimationFilesCreator {
             File file = new File("resources/" + outName + ".xyz");
             FileWriter myWriter = new FileWriter("resources/" + outName + ".xyz");
             while (dynamicScanner.hasNext()) {
-            	myWriter.write("" + (totalParticles + 5) + "\n"); //Add 5 for visualization
+            	
             	dynamicScanner.next(); //skip N token
             	//Time
-            	time= dynamicScanner.next();
+            	time= Double.parseDouble(dynamicScanner.next());
+            	
+            	myWriter.write("" + (totalParticles + 5) + "\n"); //Add 5 for visualization
             	myWriter.write("" + time + "\n");
             	for (int i = 0; i < totalParticles; i++) {
                 	//X Y R Zombie Person

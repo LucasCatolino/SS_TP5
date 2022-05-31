@@ -94,7 +94,7 @@ public class Algorithm {
 
     private void fillToFile(double time) {
     	toFile.add("" + totalNumber + "\n");
-    	toFile.add("T=" + time + "\n");
+    	toFile.add("" + String.format("%.2f",time) + "\n");
     	
     	int zombie= 0;
     	int person= 0;
