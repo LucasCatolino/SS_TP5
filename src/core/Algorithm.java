@@ -22,15 +22,21 @@ public class Algorithm {
     private List<Particle> particles;
     private int totalNumber;
     private double spaceRadio;
+    
+    //para archivar
+    private List<String> toFile;
 
     public Algorithm(String staticFile, String dynamicFile) {
+    	Locale.setDefault(Locale.US);
         fileReader(staticFile, dynamicFile);
+        toFile= new ArrayList<String>();
     }
 
     public void run(){
 
         double currentTime = 0;
-        writeOutput(currentTime,false);
+
+        fillToFile(currentTime);
         
         int zombieNumber = 1;
         int personNumber = totalNumber - zombieNumber;
@@ -42,7 +48,7 @@ public class Algorithm {
             zombieNumber = 0;
             personNumber = 0;
 
-            //agarró una partícula y la analizó con todas las demás
+            //agarra una particula y la analiza con todas las demas
             for ( Particle currentP : particles ) {
 
                 Set<Particle> nearerZombies = new TreeSet<>(createComparator(currentP));  // zombies dentro del campo de vision de currentP
@@ -57,7 +63,7 @@ public class Algorithm {
                     getNearerParticles(currentP, H_VISUAL_FIELD, nearerZombies, contactZombies, nearerHumans, contactHumans);
                 }
 
-                //creo una nueva particula con los parmetro con paso temporal despues
+                //creo una nueva particula con los parametro con paso temporal despues
                 Particle newP = currentP.next(nearerZombies, contactZombies, nearerHumans, contactHumans, dt);
 
 
@@ -80,36 +86,40 @@ public class Algorithm {
 
             currentTime += dt;
             particles = newPosition;
-            writeOutput(currentTime,true);
+
+            fillToFile(currentTime);
         }
+        writeOutputTxt();
     }
 
-    private void writeOutput(double time, boolean append) {
+    private void fillToFile(double time) {
+    	toFile.add("" + totalNumber + "\n");
+    	toFile.add("T=" + time + "\n");
+    	
     	int zombie= 0;
     	int person= 0;
-		try {
-            File file = new File("resources/dynamic.xyz");
-            FileWriter myWriter = new FileWriter("resources/dynamic.xyz", append); //true to append to file
-            myWriter.write("" + (totalNumber + 5) + "\n");
-            myWriter.write("T=" + time + "\n");
-            for (Iterator iterator = particles.iterator(); iterator.hasNext();) {
-				Particle particle = (Particle) iterator.next();
+    	for (Iterator iterator = particles.iterator(); iterator.hasNext();) {
+			Particle particle = (Particle) iterator.next();
+    		zombie= particle.isZombie() ? 1 : 0;
+			person= (zombie == 1) ? 0 : 1;
+			toFile.add("" + String.format("%.2f", particle.getPosition().getX()) + "\t"
+					+ String.format("%.2f", particle.getPosition().getY()) + "\t"
+					+ String.format("%.2f", particle.getRadio()) + "\t" + zombie + "\t" + person + "\n");
+    	}	
+	}
+    
+    private void writeOutputTxt() {
+    	try {
+            File file = new File("resources/dynamicEnd.txt");
+            FileWriter myWriter = new FileWriter("resources/dynamicEnd.txt");
+            for (Iterator iterator = toFile.iterator(); iterator.hasNext();) {
+				String stringToFile= (String) iterator.next();
 				try {
-					zombie= particle.isZombie() ? 1 : 0;
-					person= (zombie == 1) ? 0 : 1;
-            		myWriter.write("" + particle.getPosition().getX() + "\t" + particle.getPosition().getY()
-            				+ "\t" + particle.getRadio() + "\t" + zombie + "\t" + person
-            				+ "\t0\t0\n");
+            		myWriter.write(stringToFile);
             	} catch (Exception e) {
             		System.err.println("IOException");
             	}
 			}
-            myWriter.write("0\t0\t0.1\t0\t0\t0\t0\n");
-            myWriter.write("0\t" + (2*spaceRadio) + "\t0.1\t0\t0\t0\t0\n");
-            myWriter.write("" + (2*spaceRadio) + "\t0\t0.1\t0\t0\t0\t0\n");
-            myWriter.write("" + (2*spaceRadio) + "\t" + (2*spaceRadio) + "\t0.1\t0\t0\t0\t0\n");
-            myWriter.write("" + (spaceRadio+0.01) + "\t" +	(spaceRadio+0.01) + "\t" + spaceRadio + "\t1\t1\t0\t0.8\n");
-            
             myWriter.close();
         } catch (IOException e) {
             System.out.println("IOException ocurred");
@@ -129,7 +139,7 @@ public class Algorithm {
                         contactHumans.add(p);
                     }
                 }else{
-                    //esta en el campo visual y no se están tocando
+                    //esta en el campo visual y no se estan tocando
                     if(p.isZombie()) {
                         nearerZombies.add(p);
                     }else{
