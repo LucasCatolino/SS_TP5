@@ -10,6 +10,7 @@ public class CPM {
     private static final double MAX_RADIO = 0.32;
     private static final double MIN_RADIO = 0.15;
     private static final double TOU = 0.5; //seg
+    static private  final double Z_MAX_VELOCITY = 4; // m/s
     //private static final double BETA = 1;
 
     static public void apply(Particle p, Vector target, double dt, TreeSet<Particle> contactP){
@@ -38,7 +39,13 @@ public class CPM {
             Vector escapeVerse = getEscapeVerse(p, contactP.first());
 
             //update speed
-            double newSpeed = p.getMaxV();
+            double newSpeed;
+            if(p.isZombie() && contactP.first().isZombie()){
+                newSpeed = Z_MAX_VELOCITY;
+            }else{
+                newSpeed = p.getMaxV();
+            }
+
 
             //update Velocity
             p.setVelocity(Vector.multiply(escapeVerse, newSpeed));

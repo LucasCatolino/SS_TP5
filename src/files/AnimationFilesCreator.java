@@ -10,7 +10,8 @@ import java.util.Scanner;
 
 import core.Algorithm;
 
-public class AnimationFilesCreator {
+public class
+AnimationFilesCreator {
 	
 	private static void createAnimationFile(String staticFile, String dynamicFile) {
 		String outName= dynamicFile.substring(0, dynamicFile.length() - 4);

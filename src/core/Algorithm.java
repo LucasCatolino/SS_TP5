@@ -14,7 +14,7 @@ import java.util.*;
 public class Algorithm {
     //constant
     private static final double dt =0.01; //seg
-    private static final double MAX_SIMULATION_TIME = 300; //seg
+    private static final double MAX_SIMULATION_TIME = 500; //seg
     private static final double Z_VISUAL_FIELD = 4; //m
     private static final double H_VISUAL_FIELD = 6; //m
 

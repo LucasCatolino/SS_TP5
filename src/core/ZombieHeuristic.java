@@ -21,7 +21,7 @@ public class ZombieHeuristic extends Heuristic {
 							Set<Particle> nearerHumans, Set<Particle> contactHumans) {
 
 		if(nearerHumans.isEmpty() && contactHumans.isEmpty()){
-			return randomWalk(p);
+			return randomWalk(p, contactZombies);
 
 		}
 		//reinicio el contador de random walk
@@ -39,11 +39,13 @@ public class ZombieHeuristic extends Heuristic {
 	}
 
 
-	private Vector randomWalk(Particle p ){
-		if(randomWalkCounter == -1 || randomWalkCounter > MAX_RANDOM_COUNTER ){
+	private Vector randomWalk(Particle p , Set<Particle> contactZombies){
+		//cambia de direccion
+		if(randomWalkCounter == -1 || randomWalkCounter > MAX_RANDOM_COUNTER || !contactZombies.isEmpty()) {
 			randomWalkCounter = 0;
 			randomWalkTarget = getRandomWalkTarget();
-		}else{
+
+		}else{//mantengo la direccion
 			randomWalkCounter++;
 		}
 		return randomWalkTarget;
