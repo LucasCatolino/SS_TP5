@@ -32,7 +32,7 @@ public class Algorithm {
         toFile= new ArrayList<String>();
     }
 
-    public void run(){
+    public void run(int iteration){
 
         double currentTime = 0;
 
@@ -89,7 +89,7 @@ public class Algorithm {
 
             fillToFile(currentTime);
         }
-        writeOutputTxt();
+        writeOutputTxt(iteration);
     }
 
     private void fillToFile(double time) {
@@ -108,10 +108,10 @@ public class Algorithm {
     	}	
 	}
     
-    private void writeOutputTxt() {
+    private void writeOutputTxt(int iteration) {
     	try {
-            File file = new File("resources/dynamicEnd.txt");
-            FileWriter myWriter = new FileWriter("resources/dynamicEnd.txt");
+            File file = new File("resources/dynamicEnd" + iteration + ".txt");
+            FileWriter myWriter = new FileWriter("resources/dynamicEnd" + iteration + ".txt");
             for (Iterator iterator = toFile.iterator(); iterator.hasNext();) {
 				String stringToFile= (String) iterator.next();
 				try {
@@ -207,22 +207,27 @@ public class Algorithm {
     }
 
     static public void main(String[] args) throws IOException {
-		System.out.println("Static");
-		BufferedReader readerStatic = new BufferedReader(new InputStreamReader(System.in));
-		String staticInput = readerStatic.readLine();
+//		System.out.println("Static");
+//		BufferedReader readerStatic = new BufferedReader(new InputStreamReader(System.in));
+//		String staticInput = readerStatic.readLine();
+//		
+//		System.out.println("Dynamic");
+//		BufferedReader readerDynamic= new BufferedReader(new InputStreamReader(System.in));
+//		String dynamicInput = readerDynamic.readLine();
+//				
+//		String staticFile= (staticInput.length() == 0) ? "static.txt" : staticInput;
+//		String dynamicFile= (dynamicInput.length() == 0) ? "dynamic.txt" : dynamicInput;
+//		
+//		System.out.println("Starting with " + staticFile + ", " + dynamicFile);
 		
-		System.out.println("Dynamic");
-		BufferedReader readerDynamic= new BufferedReader(new InputStreamReader(System.in));
-		String dynamicInput = readerDynamic.readLine();
-				
-		String staticFile= (staticInput.length() == 0) ? "static.txt" : staticInput;
-		String dynamicFile= (dynamicInput.length() == 0) ? "dynamic.txt" : dynamicInput;
-		
-		System.out.println("Starting with " + staticFile + ", " + dynamicFile);
-		
-		Algorithm algorithm= new Algorithm(staticFile, dynamicFile);
-		algorithm.run();
-		System.out.println("End");
+		for (int i = 1; i < 11; i++) {
+			String staticFile= "static" + i + ".txt";
+			String dynamicFile= "dynamic" + i + ".txt";
+			System.out.println("Starting with " + staticFile + ", " + dynamicFile);
+			Algorithm algorithm= new Algorithm(staticFile, dynamicFile);
+			algorithm.run(i);			
+			System.out.println("End");
+		}
 	}
 
 }

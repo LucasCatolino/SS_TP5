@@ -35,8 +35,10 @@ public class FilesCreator {
 
     	System.out.println("R: " + R + " N: " + Nh);
     	
-    	Writer writerStatic = new Writer(R, Nh, "static");
-		Writer writerDynamic = new Writer(R, Nh, "dynamic");
+    	for (int i = 1; i < 11; i++) {			
+    		Writer writerStatic = new Writer(R, Nh, "static", i);
+    		Writer writerDynamic = new Writer(R, Nh, "dynamic", i);
+		}
     }
 
 }

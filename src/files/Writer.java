@@ -13,11 +13,11 @@ public class Writer {
 	private static final double MIN_DISTANCE= 1;
 	private static final int DEGREES= 360;
 		
-    public Writer(double R, int N, String type) {
+    public Writer(double R, int N, String type, int iteration) {
 
 		try {
-            File file = new File("./resources/" + type + ".txt");
-            FileWriter myWriter = new FileWriter("./resources/" + type + ".txt");
+            File file = new File("./resources/" + type + iteration + ".txt");
+            FileWriter myWriter = new FileWriter("./resources/" + type + iteration + ".txt");
             try {
             	if (type.compareTo("static") == 0) {
 					this.staticFile(R, N, myWriter);
@@ -28,7 +28,7 @@ public class Writer {
 				System.err.println("IOException");
 			}
             myWriter.close();
-            System.out.println("Successfully wrote to the file ./resources/" + type + ".txt");
+            System.out.println("Successfully wrote to the file ./resources/" + type + iteration + ".txt");
         } catch (IOException e) {
             System.out.println("IOException ocurred");
             e.printStackTrace();

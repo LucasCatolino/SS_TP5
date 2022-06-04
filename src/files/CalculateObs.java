@@ -21,7 +21,7 @@ public class CalculateObs {
 	private static final int TIME= 1;
 	private static final double PERCENTAGE= 0.75;
 	
-	private static void calculateVelocity(String staticFile, String dynamicFile, Double zombieV) {
+	private static void calculateVelocity(String staticFile, String dynamicFile, Double zombieV, int iteration) {
 	    
 		List<String> toFileDistance= new ArrayList<String>();
 		List<String> toFileSpreadingIllness= new ArrayList<String>();
@@ -147,14 +147,14 @@ public class CalculateObs {
     	LocalTime localTime = LocalTime.now();
     	String timestamp= dtf.format(localTime);
     	
-    	writeToFile(toFileDistance, "distance", (totalParticles-1), zombieV, timestamp);
-        writeToFile(toFileSpreadingIllness, "spreading", (totalParticles-1), zombieV, timestamp);
+    	writeToFile(toFileDistance, "distance", (totalParticles-1), zombieV, timestamp, iteration);
+        writeToFile(toFileSpreadingIllness, "spreading", (totalParticles-1), zombieV, timestamp, iteration);
 	}
 	
-    private static void writeToFile(List<String> toFile, String fileName, int N, double zombieV, String stamp) {
+    private static void writeToFile(List<String> toFile, String fileName, int N, double zombieV, String stamp, int iteration) {
     	try {
-			File file = new File("resources/" + fileName + "_" + N + "_" + zombieV + "_" + stamp + ".txt");
-			FileWriter myWriter = new FileWriter("resources/" + fileName + "_" + N + "_" + zombieV + "_" + stamp + ".txt");
+			File file = new File("resources/" + fileName + "_" + N + "_" + zombieV + "_" + iteration + ".txt");
+			FileWriter myWriter = new FileWriter("resources/" + fileName + "_" + N + "_" + zombieV + "_" + iteration + ".txt");
 			for (Iterator iterator = toFile.iterator(); iterator.hasNext();) {
 				String stringToFile= (String) iterator.next();
 				try {
@@ -172,26 +172,30 @@ public class CalculateObs {
 	}
 
 	static public void main(String[] args) throws IOException {
-    	System.out.println("Static");
-		BufferedReader readerStatic = new BufferedReader(new InputStreamReader(System.in));
-		String staticInput = readerStatic.readLine();
-    	
-    	System.out.println("Dynamic");
-		BufferedReader readerDynamic= new BufferedReader(new InputStreamReader(System.in));
-		String dynamicInput = readerDynamic.readLine();
+//    	System.out.println("Static");
+//		BufferedReader readerStatic = new BufferedReader(new InputStreamReader(System.in));
+//		String staticInput = readerStatic.readLine();
+//    	
+//    	System.out.println("Dynamic");
+//		BufferedReader readerDynamic= new BufferedReader(new InputStreamReader(System.in));
+//		String dynamicInput = readerDynamic.readLine();
+//		
+//		System.out.println("Zombie max v (default 2)");
+//		BufferedReader readerV= new BufferedReader(new InputStreamReader(System.in));
+//		String vInput = readerV.readLine();
+//		
+//		String staticFile= (staticInput.length() == 0) ? "static.txt" : staticInput;
+//		String dynamicFile= (dynamicInput.length() == 0) ? "dynamicEnd.txt" : dynamicInput;
+//		Double zombieV= (vInput.length() == 0) ? 2 : Double.parseDouble(vInput);
 		
-		System.out.println("Zombie max v (default 2)");
-		BufferedReader readerV= new BufferedReader(new InputStreamReader(System.in));
-		String vInput = readerV.readLine();
-		
-		String staticFile= (staticInput.length() == 0) ? "static.txt" : staticInput;
-		String dynamicFile= (dynamicInput.length() == 0) ? "dynamicEnd.txt" : dynamicInput;
-		Double zombieV= (vInput.length() == 0) ? 2 : Double.parseDouble(vInput);
-		
-		System.out.println("Starting with " + staticFile + ", " + dynamicFile + ", V_z= " + zombieV);
-
-		calculateVelocity(staticFile, dynamicFile, zombieV);
-		
-		System.out.println("End");
+		Double zombieV= 4.0;
+		for (int i = 1; i < 11; i++) {
+			String staticFile= "static" + i + ".txt";
+			String dynamicFile= "dynamicEnd" + i + ".txt";
+			
+			System.out.println("Starting with " + staticFile + ", " + dynamicFile + ", V_z= " + zombieV);
+			calculateVelocity(staticFile, dynamicFile, zombieV, i);
+			System.out.println("End");			
+		}
     }
 }
