@@ -19,10 +19,12 @@ import models.Vector;
 public class CalculateObs {
 	
 	private static final int TIME= 1;
+	private static final double PERCENTAGE= 0.75;
 	
 	private static void calculateVelocity(String staticFile, String dynamicFile, Double zombieV) {
 	    
-		List<String> toFile= new ArrayList<String>();
+		List<String> toFileDistance= new ArrayList<String>();
+		List<String> toFileSpreadingIllness= new ArrayList<String>();
 		
 		//open static file
         InputStream staticStream = Algorithm.class.getClassLoader().getResourceAsStream(staticFile);
@@ -40,6 +42,7 @@ public class CalculateObs {
         //Velocity obs
         double lastTime= 0;
         int zombiesLastCount= 0;
+        double percentageOfZombies= 0;
         
         //Distance obs
         double originalZombieXPrev= 0;
@@ -71,7 +74,7 @@ public class CalculateObs {
 		}
         
         while (dynamicScanner.hasNext()) {
-        	zombiesLastCount= 0;
+        	zombiesLastCount= 1;
         	dynamicScanner.next(); //skip N token
         	//Time
         	lastTime= Double.parseDouble(dynamicScanner.next());
@@ -90,8 +93,8 @@ public class CalculateObs {
         		z+= actPosition.getDistanceTo(prevPosition);
         		
         		//Add data to print in file
-        		toFile.add("" + (totalParticles - 1) + "\t" + zombieV + "\t" + String.format("%.2f",lastTime) + "\t" + String.format("%.2f",z) + "\n");
-
+        		toFileDistance.add("" + (totalParticles - 1) + "\t" + zombieV + "\t" + String.format("%.2f",lastTime) + "\t" + String.format("%.2f",z) + "\n");
+        		
         		//Next time act will be prev
             	originalZombieXPrev= originalZombieXAct;
             	originalZombieYPrev= originalZombieYAct;
@@ -108,13 +111,20 @@ public class CalculateObs {
         		dynamicScanner.next(); //skip R token
         		int zombie= Integer.parseInt(dynamicScanner.next()); //Zombie token
         		dynamicScanner.next(); //skip Person token
-        		if (zombie > 0) {
+        		if (zombie == 1) {
         			zombiesLastCount ++;
 				}
-			}	
+			}
+        	
+        	if (lastTime % TIME == 0) {
+        		percentageOfZombies= (double)zombiesLastCount / (double)totalParticles;
+    			toFileSpreadingIllness.add("" + (totalParticles - 1) + "\t" + zombieV + "\t" + String.format("%.2f", lastTime) + "\t" + String.format("%.2f", percentageOfZombies) + "\n");
+        	}
 		}
         dynamicScanner.close();
         
+        //TODO: este observable se va
+        /*
         lastTime= (lastTime == 0) ? 1 : lastTime;
         double velocity= zombiesLastCount / lastTime;
         
@@ -122,7 +132,7 @@ public class CalculateObs {
         
         try {
             File file = new File("resources/velocities.txt");
-            FileWriter myWriter = new FileWriter("resources/velocities.txt", true); //true to append in file
+            FileWriter myWriter = new FileWriter("resources/velocities.txt", true);
             myWriter.write(toPrint);
             myWriter.close();
             System.out.println("velocities file created");
@@ -131,17 +141,20 @@ public class CalculateObs {
             e.printStackTrace();
         }
         System.out.println(toPrint);
+        */
         
-        writeDistanceFile(toFile);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH-mm-ss");
+    	LocalTime localTime = LocalTime.now();
+    	String timestamp= dtf.format(localTime);
+    	
+    	writeToFile(toFileDistance, "distance", (totalParticles-1), zombieV, timestamp);
+        writeToFile(toFileSpreadingIllness, "spreading", (totalParticles-1), zombieV, timestamp);
 	}
 	
-    private static void writeDistanceFile(List<String> toFile) {
-    	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH-mm-ss");
-    	LocalTime localTime = LocalTime.now();
-    	String timestamp= dtf.format(localTime);            
+    private static void writeToFile(List<String> toFile, String fileName, int N, double zombieV, String stamp) {
     	try {
-			File file = new File("resources/distance_" + timestamp + ".txt");
-			FileWriter myWriter = new FileWriter("resources/distance_" + timestamp + ".txt");
+			File file = new File("resources/" + fileName + "_" + N + "_" + zombieV + "_" + stamp + ".txt");
+			FileWriter myWriter = new FileWriter("resources/" + fileName + "_" + N + "_" + zombieV + "_" + stamp + ".txt");
 			for (Iterator iterator = toFile.iterator(); iterator.hasNext();) {
 				String stringToFile= (String) iterator.next();
 				try {
@@ -151,7 +164,7 @@ public class CalculateObs {
 				}
 			}
 			myWriter.close();
-	    	System.out.println("distance file created");
+	    	System.out.println(fileName + " file created");
         } catch (IOException e) {
             System.out.println("IOException ocurred");
             e.printStackTrace();
