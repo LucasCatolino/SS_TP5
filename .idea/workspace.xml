@@ -5,7 +5,8 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/core/Algorithm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/Algorithm.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/core/ZombieHeuristic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/ZombieHeuristic.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/files/AnimationFilesCreator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/files/AnimationFilesCreator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/files/CalculateObs.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/files/CalculateObs.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/files/FilesCreator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/files/FilesCreator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/models/Particle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/Particle.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -29,7 +30,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
   </component>
-  <component name="RunManager" selected="Application.AnimationFilesCreator">
+  <component name="RunManager" selected="Application.CalculateObs">
     <configuration name="Algorithm" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="core.Algorithm" />
       <module name="SS_TP5" />
@@ -96,9 +97,9 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.AnimationFilesCreator" />
-        <item itemvalue="Application.Algorithm" />
         <item itemvalue="Application.CalculateObs" />
+        <item itemvalue="Application.Algorithm" />
+        <item itemvalue="Application.AnimationFilesCreator" />
         <item itemvalue="Application.FilesCreator" />
       </list>
     </recent_temporary>
@@ -118,16 +119,5 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/models/Particle.java</url>
-          <line>189</line>
-          <option name="timeStamp" value="23" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

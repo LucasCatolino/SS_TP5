@@ -188,8 +188,8 @@ public class CalculateObs {
 //		String dynamicFile= (dynamicInput.length() == 0) ? "dynamicEnd.txt" : dynamicInput;
 //		Double zombieV= (vInput.length() == 0) ? 2 : Double.parseDouble(vInput);
 		
-		Double zombieV= 4.0;
-		for (int i = 1; i < 11; i++) {
+		Double zombieV = 5.0;
+		for (int i = 1; i < 6; i++) {
 			String staticFile= "static" + i + ".txt";
 			String dynamicFile= "dynamicEnd" + i + ".txt";
 			

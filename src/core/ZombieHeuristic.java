@@ -45,8 +45,7 @@ public class ZombieHeuristic extends Heuristic {
 			if(flag){
 				double aux = Math.random();
 				if( aux <= CHANCE){
-					System.out.println("dead");
-					p.setDead(true);
+					p.setConvertToPerson(true);
 					return null;
 				}
 			}

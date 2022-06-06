@@ -3,18 +3,16 @@ package core;
 import models.Particle;
 import models.Vector;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.*;
 
 public class Algorithm {
     //constant
     private static final double dt =0.01; //seg
-    private static final double MAX_SIMULATION_TIME = 200; //seg
+    private static final double MAX_SIMULATION_TIME = 500; //seg
     private static final double Z_VISUAL_FIELD = 4; //m
     private static final double H_VISUAL_FIELD = 6; //m
 
@@ -22,7 +20,7 @@ public class Algorithm {
     private List<Particle> particles;
     private int totalNumber;
     private double spaceRadio;
-    
+
     //para archivar
     private List<String> toFile;
 
@@ -37,11 +35,11 @@ public class Algorithm {
         double currentTime = 0;
 
         fillToFile(currentTime);
-        
+
         int zombieNumber = 1;
         int personNumber = totalNumber - zombieNumber;
 
-        while(!endCondition(currentTime, personNumber, zombieNumber)){
+        while(!endCondition(currentTime, zombieNumber, personNumber)){
 
             List<Particle> newPosition = new ArrayList<>();
 
@@ -67,19 +65,23 @@ public class Algorithm {
                 Particle newP = currentP.next(nearerZombies, contactZombies, nearerHumans, contactHumans, dt);
 
 
-                if(newP != null) {
-                    //metricas de la corrida actual
-                    if (newP.isZombie()) {
-                        zombieNumber++;
-                    } else {
-                        personNumber++;
-                    }
-
-                    //lo guardo en el nuevo espacio
-                    newPosition.add(newP);
+                //metricas de la corrida actual
+                if(newP.isZombie()) {
+                    zombieNumber++;
+                }else {
+                    personNumber++;
                 }
 
+                //lo guardo en el nuevo espacio
+                newPosition.add(newP);
+
             }//termina el for
+
+            if(totalNumber != zombieNumber + personNumber){
+                System.out.println("FALLO");
+                return;
+            }
+
             currentTime += dt;
             particles = newPosition;
 
@@ -91,24 +93,19 @@ public class Algorithm {
     private void fillToFile(double time) {
     	toFile.add("" + totalNumber + "\n");
     	toFile.add("" + String.format("%.2f",time) + "\n");
-    	
+
     	int zombie= 0;
     	int person= 0;
     	for (Iterator iterator = particles.iterator(); iterator.hasNext();) {
 			Particle particle = (Particle) iterator.next();
-            if(particle.isZombie()){
-                person = 0;
-                zombie = particle.isDead() ? 0: 1;
-            }else{
-                person = 1;
-                zombie = 0;
-            }
+    		zombie= particle.isZombie() ? 1 : 0;
+			person= (zombie == 1) ? 0 : 1;
 			toFile.add("" + String.format("%.2f", particle.getPosition().getX()) + "\t"
 					+ String.format("%.2f", particle.getPosition().getY()) + "\t"
 					+ String.format("%.2f", particle.getRadio()) + "\t" + zombie + "\t" + person + "\n");
     	}
 	}
-    
+
     private void writeOutputTxt(int iteration) {
     	try {
             File file = new File("resources/dynamicEnd" + iteration + ".txt");
@@ -127,7 +124,7 @@ public class Algorithm {
             e.printStackTrace();
         }
 	}
-    
+
     private void getNearerParticles(Particle currentP, double visualField, Set<Particle> nearerZombies,
                                     Set<Particle> contactZombies, Set<Particle> nearerHumans, Set<Particle> contactHumans){
         for ( Particle p: particles ) {
@@ -161,8 +158,8 @@ public class Algorithm {
         };
     }
 
-    private boolean endCondition(double currentTime, int personNumber, int zombieNumber){
-        return personNumber == 0 || currentTime >= MAX_SIMULATION_TIME || zombieNumber == 0;
+    private boolean endCondition(double currentTime, int zombieNumber, int personNumber){
+        return zombieNumber == 0 || currentTime >= MAX_SIMULATION_TIME || personNumber == 0;
     }
 
     private void fileReader(String staticFile, String dynamicFile){
@@ -221,7 +218,7 @@ public class Algorithm {
 //		
 //		System.out.println("Starting with " + staticFile + ", " + dynamicFile);
 		
-		for (int i = 1; i < 11; i++) {
+		for (int i = 1; i < 6; i++) {
 			String staticFile= "static" + i + ".txt";
 			String dynamicFile= "dynamic" + i + ".txt";
 			System.out.println("Starting with " + staticFile + ", " + dynamicFile);

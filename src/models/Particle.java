@@ -13,11 +13,10 @@ public class Particle{
     static private int nextId = 0;
     static private final double CONVERTER_TIME = 7;
     static private  final double Z_INACTIVE_VELOCITY = 0.3; // m/s
-    static private  final double Z_MAX_VELOCITY = 3; // m/s
-    static private  final double H_MAX_VELOCITY = 4; //todo:no se cual se
+    static private  final double Z_MAX_VELOCITY = 5; //m/s
+    static private  final double H_MAX_VELOCITY = 4; // m/s
 
-   // private double zombieContactTime = 0; //si se pasa de 7seg se convierte
-    private Map<Integer,Double> zombieContactTime = new HashMap<>();
+    private double zombieContactTime = 0;
 
     private double radio;
     private double maxV;
@@ -28,7 +27,7 @@ public class Particle{
     private final int id;
     private final double spaceRadio;
     public List<Integer> idContMan;
-    private boolean isDead;
+    private boolean convertToPerson;
 
     public Particle(Particle particle){
         position = new Vector(particle.position.getX(), particle.position.getY());
@@ -69,12 +68,12 @@ public class Particle{
     //-------------------------------------------------
 
 
-    public boolean isDead() {
-        return isDead;
+    public boolean isConvertToPerson() {
+        return convertToPerson;
     }
 
-    public void setDead(boolean dead) {
-        isDead = dead;
+    public void setConvertToPerson(boolean convertToPerson) {
+        this.convertToPerson = convertToPerson;
     }
 
     public int getId() {
@@ -138,6 +137,14 @@ public class Particle{
         }
     }
 
+    public void convertToPerson(){
+        if (isZombie) {
+            isZombie = false;
+            heuristic= new PersonHeuristic(spaceRadio);
+            maxV = H_MAX_VELOCITY;
+        }
+    }
+
     //------------------------------------------
 
     //devuelve una particula con la nueva posicion;
@@ -155,8 +162,8 @@ public class Particle{
         Vector target = heuristic.getTarget(newParticle , nearerZombies, contactZombies, nearerHumans, contactHumans);
 
         //se muere
-        if( target != null && target.getX()==-1 && target.getY()==-1){
-            return  null;
+        if(newParticle.convertToPerson){
+            newParticle.convertToPerson();
         }
 
         //manejo de velocidades maxima
@@ -188,35 +195,12 @@ public class Particle{
         if(isZombie){return false;}
 
         if(!contactZombies.isEmpty()){
-            if(p.zombieContactTime.isEmpty()){
-                for (Particle zombies:contactZombies) {
-                    p.zombieContactTime.put(zombies.id, dt);
-                }
-            }else{
-                for (Integer key : p.zombieContactTime.keySet()) {
-                    boolean isKey = false;
-                    for (Particle z: contactZombies) {
-                        if(key == z.getId()){
-                            double aux = p.zombieContactTime.get(key);
-                            aux+= dt;
-                            p.zombieContactTime.put(z.getId(),aux);
-                            isKey = true;
-                        }
-                    }
-                    if(!isKey){
-                        p.zombieContactTime.put(key, 0.0);
-                    }
-                }
-            }
-
+            p.zombieContactTime += dt;
         }else{
-            p.zombieContactTime.replaceAll((k, v) -> 0.0);
+            p.zombieContactTime = 0;
         }
+        return  p.zombieContactTime >= CONVERTER_TIME;
 
-        for (Double count : p.zombieContactTime.values()) {
-             return count >= CONVERTER_TIME;
-        }
-        return false;
     }
 
     //-------
