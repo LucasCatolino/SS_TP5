@@ -7,6 +7,7 @@ import java.util.TreeSet;
 
 public class ZombieHeuristic extends Heuristic {
 
+	private static final double CHANCE = 0.25;
 	private static final double MAX_RANDOM_COUNTER = 2000;// cantidad de dt hasta cambiar a un nuevo randomWalkTarget
 	private static final int DEGREES= 360;
 	private Vector randomWalkTarget;
@@ -32,9 +33,27 @@ public class ZombieHeuristic extends Heuristic {
 
 	//----------
 	private Vector closestParticle(Particle p, TreeSet<Particle> nearerHumans, TreeSet<Particle> contactHumans){
+
 		if(!contactHumans.isEmpty()){
-			return contactHumans.first().getPosition(); // No deberìa ir a random Walk?
+			boolean flag = false;
+			for (Particle h: contactHumans) {
+				if(!p.idContMan.contains(h.getId())) {
+					p.idContMan.add(h.getId());
+					flag = true;
+				}
+			}
+			if(flag){
+				double aux = Math.random();
+				if( aux <= CHANCE){
+					System.out.println("dead");
+					p.setDead(true);
+					return null;
+				}
+			}
+			return null;
 		}
+
+		p.idContMan.clear();
 		return nearerHumans.first().getPosition();
 	}
 
@@ -57,8 +76,6 @@ public class ZombieHeuristic extends Heuristic {
 
 		double x = distance * Math.cos(Math.toRadians(degrees)) + getSpaceRadio();
 		double y = distance * Math.sin(Math.toRadians(degrees)) + getSpaceRadio();
-
-
 
 		return  new Vector(x, y);
 

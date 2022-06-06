@@ -3,13 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="90788013-07a7-4eb0-a5e4-d8f0a489a972" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SS_TP5/dynamic.xyz" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/core/Algorithm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/Algorithm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/CPM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/CPM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/PersonHeuristic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/PersonHeuristic.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/core/ZombieHeuristic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/ZombieHeuristic.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/files/AnimationFilesCreator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/files/AnimationFilesCreator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/Vector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/Vector.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/Particle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/Particle.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,6 +33,7 @@
     <configuration name="Algorithm" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="core.Algorithm" />
       <module name="SS_TP5" />
+      <option name="VM_PARAMETERS" value="-Xms1024m" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="core.*" />
@@ -48,6 +46,19 @@
     </configuration>
     <configuration name="AnimationFilesCreator" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="files.AnimationFilesCreator" />
+      <module name="SS_TP5" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="files.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CalculateObs" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="files.CalculateObs" />
       <module name="SS_TP5" />
       <extension name="coverage">
         <pattern>
@@ -77,10 +88,17 @@
         <option name="nim.task.build.to.cache" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Application.Algorithm" />
+      <item itemvalue="Application.AnimationFilesCreator" />
+      <item itemvalue="Application.CalculateObs" />
+      <item itemvalue="Application.FilesCreator" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.AnimationFilesCreator" />
         <item itemvalue="Application.Algorithm" />
+        <item itemvalue="Application.CalculateObs" />
         <item itemvalue="Application.FilesCreator" />
       </list>
     </recent_temporary>
@@ -94,6 +112,7 @@
       <option name="presentableId" value="Default" />
       <updated>1653924225017</updated>
       <workItem from="1653924231871" duration="1482000" />
+      <workItem from="1654465635830" duration="12054000" />
     </task>
     <servers />
   </component>
@@ -104,9 +123,9 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/core/CPM.java</url>
-          <line>18</line>
-          <option name="timeStamp" value="11" />
+          <url>file://$PROJECT_DIR$/src/models/Particle.java</url>
+          <line>189</line>
+          <option name="timeStamp" value="23" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

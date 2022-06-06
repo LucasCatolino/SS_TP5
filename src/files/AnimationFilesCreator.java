@@ -79,8 +79,8 @@ AnimationFilesCreator {
 		BufferedReader readerDynamic= new BufferedReader(new InputStreamReader(System.in));
 		String dynamicInput = readerDynamic.readLine();
 		
-		String staticFile= (staticInput.length() == 0) ? "static.txt" : staticInput;
-		String dynamicFile= (dynamicInput.length() == 0) ? "dynamicEnd.txt" : dynamicInput;
+		String staticFile= (staticInput.length() == 0) ? "static1.txt" : staticInput;
+		String dynamicFile= (dynamicInput.length() == 0) ? "dynamicEnd1.txt" : dynamicInput;
 		
 		System.out.println("Starting with " + staticFile + ", " + dynamicFile);
 

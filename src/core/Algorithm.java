@@ -14,7 +14,7 @@ import java.util.*;
 public class Algorithm {
     //constant
     private static final double dt =0.01; //seg
-    private static final double MAX_SIMULATION_TIME = 500; //seg
+    private static final double MAX_SIMULATION_TIME = 200; //seg
     private static final double Z_VISUAL_FIELD = 4; //m
     private static final double H_VISUAL_FIELD = 6; //m
 
@@ -41,7 +41,7 @@ public class Algorithm {
         int zombieNumber = 1;
         int personNumber = totalNumber - zombieNumber;
 
-        while(!endCondition(currentTime, personNumber)){
+        while(!endCondition(currentTime, personNumber, zombieNumber)){
 
             List<Particle> newPosition = new ArrayList<>();
 
@@ -67,23 +67,19 @@ public class Algorithm {
                 Particle newP = currentP.next(nearerZombies, contactZombies, nearerHumans, contactHumans, dt);
 
 
-                //metricas de la corrida actual
-                if(newP.isZombie()) {
-                    zombieNumber++;
-                }else {
-                    personNumber++;
+                if(newP != null) {
+                    //metricas de la corrida actual
+                    if (newP.isZombie()) {
+                        zombieNumber++;
+                    } else {
+                        personNumber++;
+                    }
+
+                    //lo guardo en el nuevo espacio
+                    newPosition.add(newP);
                 }
 
-                //lo guardo en el nuevo espacio
-                newPosition.add(newP);
-
             }//termina el for
-
-            if(totalNumber != zombieNumber + personNumber){
-                System.out.println("FALLO");
-                return;
-            }
-
             currentTime += dt;
             particles = newPosition;
 
@@ -100,12 +96,17 @@ public class Algorithm {
     	int person= 0;
     	for (Iterator iterator = particles.iterator(); iterator.hasNext();) {
 			Particle particle = (Particle) iterator.next();
-    		zombie= particle.isZombie() ? 1 : 0;
-			person= (zombie == 1) ? 0 : 1;
+            if(particle.isZombie()){
+                person = 0;
+                zombie = particle.isDead() ? 0: 1;
+            }else{
+                person = 1;
+                zombie = 0;
+            }
 			toFile.add("" + String.format("%.2f", particle.getPosition().getX()) + "\t"
 					+ String.format("%.2f", particle.getPosition().getY()) + "\t"
 					+ String.format("%.2f", particle.getRadio()) + "\t" + zombie + "\t" + person + "\n");
-    	}	
+    	}
 	}
     
     private void writeOutputTxt(int iteration) {
@@ -160,8 +161,8 @@ public class Algorithm {
         };
     }
 
-    private boolean endCondition(double currentTime, int personNumber){
-        return personNumber == 0 || currentTime >= MAX_SIMULATION_TIME;
+    private boolean endCondition(double currentTime, int personNumber, int zombieNumber){
+        return personNumber == 0 || currentTime >= MAX_SIMULATION_TIME || zombieNumber == 0;
     }
 
     private void fileReader(String staticFile, String dynamicFile){

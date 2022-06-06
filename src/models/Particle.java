@@ -16,7 +16,8 @@ public class Particle{
     static private  final double Z_MAX_VELOCITY = 3; // m/s
     static private  final double H_MAX_VELOCITY = 4; //todo:no se cual se
 
-    private double zombieContactTime = 0; //si se pasa de 7seg se convierte
+   // private double zombieContactTime = 0; //si se pasa de 7seg se convierte
+    private Map<Integer,Double> zombieContactTime = new HashMap<>();
 
     private double radio;
     private double maxV;
@@ -26,6 +27,8 @@ public class Particle{
     private Heuristic heuristic;
     private final int id;
     private final double spaceRadio;
+    public List<Integer> idContMan;
+    private boolean isDead;
 
     public Particle(Particle particle){
         position = new Vector(particle.position.getX(), particle.position.getY());
@@ -37,6 +40,7 @@ public class Particle{
         this.isZombie = particle.isZombie;
         this.maxV = particle.maxV;
         this.zombieContactTime = particle.zombieContactTime;
+        this.idContMan = particle.idContMan;
     }
 
     public Particle(Vector position, Vector velocity, double radio, boolean isZombie, double spaceRadio) {
@@ -46,6 +50,7 @@ public class Particle{
         this.id = getNextId();
         this.spaceRadio = spaceRadio;
         this.isZombie = isZombie;
+        idContMan = new ArrayList<>();
         if (isZombie) {
             maxV = Z_MAX_VELOCITY;
             heuristic= new ZombieHeuristic(spaceRadio);
@@ -62,6 +67,19 @@ public class Particle{
     }
 
     //-------------------------------------------------
+
+
+    public boolean isDead() {
+        return isDead;
+    }
+
+    public void setDead(boolean dead) {
+        isDead = dead;
+    }
+
+    public int getId() {
+        return id;
+    }
 
     public Vector getPosition() {
         return position;
@@ -136,6 +154,11 @@ public class Particle{
         //aplica la heurística
         Vector target = heuristic.getTarget(newParticle , nearerZombies, contactZombies, nearerHumans, contactHumans);
 
+        //se muere
+        if( target != null && target.getX()==-1 && target.getY()==-1){
+            return  null;
+        }
+
         //manejo de velocidades maxima
         if(isZombie){
             //si es zombie y no tiene humanos cerca cambia la velocidad
@@ -163,14 +186,40 @@ public class Particle{
 
     private boolean isConverted(Particle p, Set<Particle> contactZombies, double dt){
         if(isZombie){return false;}
-        if(!contactZombies.isEmpty() || p.zombieContactTime != 0){
-            p.zombieContactTime += dt;
+
+        if(!contactZombies.isEmpty()){
+            if(p.zombieContactTime.isEmpty()){
+                for (Particle zombies:contactZombies) {
+                    p.zombieContactTime.put(zombies.id, dt);
+                }
+            }else{
+                for (Integer key : p.zombieContactTime.keySet()) {
+                    boolean isKey = false;
+                    for (Particle z: contactZombies) {
+                        if(key == z.getId()){
+                            double aux = p.zombieContactTime.get(key);
+                            aux+= dt;
+                            p.zombieContactTime.put(z.getId(),aux);
+                            isKey = true;
+                        }
+                    }
+                    if(!isKey){
+                        p.zombieContactTime.put(key, 0.0);
+                    }
+                }
+            }
+
+        }else{
+            p.zombieContactTime.replaceAll((k, v) -> 0.0);
         }
-        return p.zombieContactTime >= CONVERTER_TIME;
+
+        for (Double count : p.zombieContactTime.values()) {
+             return count >= CONVERTER_TIME;
+        }
+        return false;
     }
 
     //-------
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
