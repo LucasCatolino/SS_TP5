@@ -13,7 +13,7 @@ public class Particle{
     static private int nextId = 0;
     static private final double CONVERTER_TIME = 7;
     static private  final double Z_INACTIVE_VELOCITY = 0.3; // m/s
-    static private  final double Z_MAX_VELOCITY = 5; //m/s
+    static private  final double Z_MAX_VELOCITY = 4; //m/s
     static private  final double H_MAX_VELOCITY = 4; // m/s
 
     private double zombieContactTime = 0;

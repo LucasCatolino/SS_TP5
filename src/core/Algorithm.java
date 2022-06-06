@@ -218,7 +218,7 @@ public class Algorithm {
 //		
 //		System.out.println("Starting with " + staticFile + ", " + dynamicFile);
 		
-		for (int i = 1; i < 6; i++) {
+		for (int i = 1; i < 2; i++) {
 			String staticFile= "static" + i + ".txt";
 			String dynamicFile= "dynamic" + i + ".txt";
 			System.out.println("Starting with " + staticFile + ", " + dynamicFile);
